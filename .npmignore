@@ -1,0 +1,5 @@
+Procfile
+.gitignore
+.jshintrc
+.npmignore
+.travis.yml

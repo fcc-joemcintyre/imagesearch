@@ -1,0 +1,24 @@
+{
+  "name": "imagesearch",
+  "author": "Joe McIntyre (j_h_mcintyre@yahoo.com)",
+  "description": "Image Search service",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fcc-joemcintyre/imagesearch"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.13.4",
+    "request": "2.69.0"
+  },
+  "scripts": {
+    "test": "mocha ./test/test.js"
+  },
+  "devDependencies": {
+    "mocha": "2.4.5"
+  },
+  "engines": {
+    "node": "4.3.1"
+  }
+}
