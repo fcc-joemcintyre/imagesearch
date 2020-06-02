@@ -1,14 +1,14 @@
-const assert = require ('assert');
-const fetch = require ('node-fetch');
-const processCommand = require ('../lib/cmd').processCommand;
-const server = require ('../lib/server');
+import assert from 'assert';
+import fetch from 'node-fetch';
+import { processCommand } from '../lib/cmd.js';
+import { start, stop } from '../lib/server.js';
 
 before (async function () {
-  await server.start ('http', 'localhost', 3000, false);
+  await start ('http', 'localhost', 3000, false);
 });
 
 after (async function () {
-  await server.stop ();
+  await stop ();
 });
 
 describe ('test server', function () {
@@ -45,7 +45,7 @@ describe ('test server', function () {
       assert (res.status === 200);
       const body = await res.json ();
       assert (body.length > 0);
-    });
+    }).timeout (5000);
   });
 
   describe ('valid request (one result in latest searches)', function () {

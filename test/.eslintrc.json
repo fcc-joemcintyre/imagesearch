@@ -6,6 +6,9 @@
   "rules": {
     "func-names": "off",
     "no-console": "off",
-    "prefer-arrow-callback": "off"
+    "prefer-arrow-callback": "off",
+    "import/extensions": ["error", "always", {
+      "js": "always"
+    }]
   }
 }
