@@ -1,6 +1,6 @@
 # Image Search Service
 
-[![Build Status](https://travis-ci.org/fcc-joemcintyre/imagesearch.svg?branch=master)](https://travis-ci.org/fcc-joemcintyre/simagesearch)
+[![Build Status](https://travis-ci.org/fcc-joemcintyre/imagesearch.svg?branch=master)](https://travis-ci.org/fcc-joemcintyre/imagesearch)
 
 This service returns a JSON object containing a directory of search results
 for URL that are related to the search terms provided. An offset into the
