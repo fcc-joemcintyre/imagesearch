@@ -1,14 +1,11 @@
 {
-  "extends": "@cygns",
+  "extends": "@cygns/eslint-config-node",
   "env": {
     "mocha": true
   },
   "rules": {
     "func-names": "off",
     "no-console": "off",
-    "prefer-arrow-callback": "off",
-    "import/extensions": ["error", "always", {
-      "js": "always"
-    }]
+    "prefer-arrow-callback": "off"
   }
 }
