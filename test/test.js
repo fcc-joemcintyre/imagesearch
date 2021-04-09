@@ -4,7 +4,7 @@ import { processCommand } from '../lib/cmd.js';
 import { start, stop } from '../lib/server.js';
 
 before (async function () {
-  await start ('http', 'localhost', 3000, false);
+  await start ('http', 'localhost', 3000);
 });
 
 after (async function () {
@@ -154,28 +154,28 @@ describe ('cmd', function () {
   describe ('port out of range (negative)', function () {
     it ('should fail', function () {
       const cmd = processCommand (['-p=-1']);
-      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: '-1' });
+      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: 0 });
     });
   });
 
   describe ('port out of range (positive)', function () {
     it ('should fail', function () {
       const cmd = processCommand (['-p=200000']);
-      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: '200000' });
+      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: 0 });
     });
   });
 
   describe ('port not an integer', function () {
     it ('should fail', function () {
       const cmd = processCommand (['-p=2000.5']);
-      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: '2000.5' });
+      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: 0 });
     });
   });
 
   describe ('port not a number', function () {
     it ('should fail', function () {
       const cmd = processCommand (['-p=ABC']);
-      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: 'ABC' });
+      assert.deepStrictEqual (cmd, { code: 1, exit: true, protocol: 'http', host: 'localhost', port: 0 });
     });
   });
 

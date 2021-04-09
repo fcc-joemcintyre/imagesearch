@@ -1,6 +1,3 @@
 {
-  "extends": "@cygns/eslint-config-node",
-  "rules": {
-    "no-console": "off"
-  }
+  "extends": "@cygns/eslint-config-node"
 }
