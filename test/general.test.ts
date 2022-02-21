@@ -1,7 +1,12 @@
 import assert from 'assert';
 import fetch from 'node-fetch';
-import { processCommand } from '../lib/cmd.js';
-import { start, stop } from '../lib/server.js';
+import { processCommand } from '../src/cmd.js';
+import { start, stop } from '../src/server.js';
+import { Search } from '../src/listener.js';
+
+type SearchError = {
+  errorCode: number,
+};
 
 before (async function () {
   await start ('http', 'localhost', 3000);
@@ -34,7 +39,7 @@ describe ('test server', function () {
     it ('should return JSON object with the empty latest searches', async function () {
       const res = await fetch ('http://localhost:3000/api/imagesearch/latest');
       assert (res.status === 200);
-      const body = await res.json ();
+      const body = await res.json () as Search[];
       assert (body.length === 0);
     });
   });
@@ -43,7 +48,7 @@ describe ('test server', function () {
     it ('should return 200 with search results', async function () {
       const res = await fetch ('http://localhost:3000/api/imagesearch?q=sunset');
       assert (res.status === 200);
-      const body = await res.json ();
+      const body = await res.json () as Search[];
       assert (body.length > 0);
     }).timeout (5000);
   });
@@ -52,7 +57,7 @@ describe ('test server', function () {
     it ('should return JSON object with one result in latest searches', async function () {
       const res = await fetch ('http://localhost:3000/api/imagesearch/latest');
       assert (res.status === 200);
-      const body = await res.json ();
+      const body = await res.json () as Search[];
       assert ((body.length === 1) && (body[0].query === 'sunset') && (body[0].time));
     });
   });
@@ -62,7 +67,12 @@ describe ('test server', function () {
       const res = await fetch ('http://localhost:3000/api/imagesearch?q=sunsets&offset=abc');
       assert (res.status === 200);
       const body = await res.json ();
-      assert (body.errorCode === 1);
+      if (Array.isArray (body)) {
+        assert (false);
+      } else {
+        const t = body as SearchError;
+        assert (t.errorCode === 1);
+      }
     });
   });
 
@@ -71,7 +81,12 @@ describe ('test server', function () {
       const res = await fetch ('http://localhost:3000/api/imagesearch?q=sunsets&offset=-1');
       assert (res.status === 200);
       const body = await res.json ();
-      assert (body.errorCode === 1);
+      if (Array.isArray (body)) {
+        assert (false);
+      } else {
+        const t = body as SearchError;
+        assert (t.errorCode === 1);
+      }
     });
   });
 
@@ -80,7 +95,12 @@ describe ('test server', function () {
       const res = await fetch ('http://localhost:3000/api/imagesearch?q=sunsets&offset=-1000');
       assert (res.status === 200);
       const body = await res.json ();
-      assert (body.errorCode === 1);
+      if (Array.isArray (body)) {
+        assert (false);
+      } else {
+        const t = body as SearchError;
+        assert (t.errorCode === 1);
+      }
     });
   });
 
@@ -89,7 +109,12 @@ describe ('test server', function () {
       const res = await fetch ('http://localhost:3000/api/imagesearch');
       assert (res.status === 200);
       const body = await res.json ();
-      assert (body.errorCode === 2);
+      if (Array.isArray (body)) {
+        assert (false);
+      } else {
+        const t = body as SearchError;
+        assert (t.errorCode === 2);
+      }
     });
   });
 });

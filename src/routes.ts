@@ -1,11 +1,11 @@
+import { Express } from 'express';
 import { latest, search } from './listener.js';
 
 /**
  * Initialize routes.
- * @param {Object} app Express instance
- * @returns {void}
+ * @param app Express instance
  */
-export function init (app) {
+export function init (app: Express) {
   app.get ('/api/imagesearch/latest', latest);
   app.get ('/api/imagesearch', search);
 }

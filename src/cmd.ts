@@ -1,20 +1,9 @@
-/**
-  @typedef {object} CommandResult
-  @property {number} code Error code (0 if no error)
-  @property {boolean} exit Flag, exit or not
-  @property {number} port Port number
-  @property {string} protocol Protocol (http or https)
-  @property {string} host Host name
- */
-
-/**
- * Parse a string to an integer, returning null if not an integer
- * @param {string} value String to convert
- * @returns {number?} Converted number, or null
- */
-function getInteger (value) {
-  const result = Number (value);
-  return Number.isInteger (result) ? result : null;
+export type CommandResult = {
+  code: number,
+  exit: boolean,
+  protocol: string,
+  host: string,
+  port: number,
 }
 
 /**
@@ -25,10 +14,10 @@ function getInteger (value) {
  * @param {string[]} args Array of arguments
  * @returns {CommandResult} Command parsing result
  */
-export function processCommand (args) {
+export function processCommand (args: string[]) {
   let showHelp = false;
   const errors = [];
-  const result = {
+  const result: CommandResult = {
     code: 0,
     exit: false,
     protocol: '',
@@ -36,7 +25,6 @@ export function processCommand (args) {
     port: 0,
   };
 
-  let argPort = '';
   for (const arg of args) {
     // if a settings argument, it will contain an equals sign
     if (arg.indexOf ('=') > -1) {
@@ -48,7 +36,7 @@ export function processCommand (args) {
       } else if (key === '--protocol') {
         result.protocol = elements[1];
       } else if ((key === '-p') || (key === '--port')) {
-        argPort = elements[1];
+        result.port = Number (elements[1]);
       } else {
         errors.push (`Error: Invalid option (${elements[0]})`);
       }
@@ -70,13 +58,12 @@ export function processCommand (args) {
   if (result.host === '') {
     result.host = 'localhost';
   }
-  const port = getInteger (argPort);
-  if ((port === null) || (port < 0) || (port > 65535)) {
+  if (Number.isNaN (result.port) || (result.port < 0) ||
+    (result.port > 65535) || (Math.floor (result.port) !== result.port)) {
     errors.push (`Invalid port number (${result.port}). Must be integer between 0 and 65535`);
-  } else if (port === 0) {
+    result.port = 0;
+  } else if (result.port === 0) {
     result.port = 3000;
-  } else {
-    result.port = port;
   }
 
   // if help not an argument, output list of errors

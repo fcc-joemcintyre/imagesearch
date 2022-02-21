@@ -1,42 +1,32 @@
+import { Request, Response } from 'express';
 import fetch from 'node-fetch';
 
-/**
-  @typedef {import ('express').Request} Request
-  @typedef {import ('express').Response} Response
- */
+export type Search = {
+  query: string,
+  time: Date,
+};
 
-const searches = [];
-
-/**
- * Parse a string to an integer, returning null if not an integer
- * @param {string} value String to convert
- * @returns {number?} Converted number, or null
- */
-function getInteger (value) {
-  const result = Number (value);
-  return Number.isInteger (result) ? result : null;
-}
+const searches: Search[] = [];
 
 /**
  * Return the search results for a request.
- * @param {Request} req HTTP request
- * @param {Response} res HTTP response
- * @returns {Promise<void>}
+ * @param req HTTP request
+ * @param res HTTP response
  */
-export async function search (req, res) {
-  console.log ('search', req.query.q, getInteger (req.query.offset) || 0);
+export async function search (req: Request, res: Response) {
+  let offset = 0;
+  if (typeof (req.query.offset) === 'string') {
+    offset = Number (req.query.offset);
+  }
+  console.log ('search', req.query.q, offset);
   const result = [];
   // get and validate params, generating error result if invalid
   const { q } = req.query;
-  let { offset } = req.query;
-  if (offset) {
-    offset = getInteger (req.query.offset);
-    if ((offset === null) || (offset < 0) || (offset > 100)) {
-      res.status (200).json ({ errorCode: 1, message: 'Invalid offset value' });
-      return;
-    }
+  if (Number.isNaN (offset) || (offset < 0) || (offset > 100)) {
+    res.status (200).json ({ errorCode: 1, message: 'Invalid offset value' });
+    return;
   }
-  if (!q) {
+  if (!q || typeof (q) !== 'string') {
     res.status (200).json ({ errorCode: 2, message: 'Missing search terms' });
     return;
   }
@@ -62,7 +52,17 @@ export async function search (req, res) {
       message: 'Could not complete request',
     });
   } else {
-    const body = await r.json ();
+    type Body = {
+      items: [{
+        image: {
+          thumbnailLink: string,
+          contextLink: string,
+        },
+        link: string,
+        snippet: string,
+      }],
+    };
+    const body = await r.json () as Body;
     for (const item of body.items) {
       result.push ({
         thumbnailURL: item.image.thumbnailLink,
@@ -87,10 +87,9 @@ export async function search (req, res) {
 
 /**
  * Return the list of recent searches
- * @param {Request} req HTTP request
- * @param {Response} res HTTP response
- * @returns {void}
+ * @param req HTTP request
+ * @param res HTTP response
  */
-export function latest (req, res) {
+export function latest (req: Request, res: Response) {
   res.status (200).json (searches);
 }

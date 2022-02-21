@@ -1,9 +1,9 @@
 /**
  * Generate home page HTML
- * @param {string} hostName Host name
- * @returns {string} Generated HTML content
+ * @param hostName Host name
+ * @returns Generated HTML content
  */
-export function homepage (hostName) {
+export function homepage (hostName: string): string {
   return (
     `<h1>Image Search Service</h1>
     <p>This service returns a JSON object containing a directory of search results
