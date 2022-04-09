@@ -72,6 +72,12 @@ Build
 npm run build
 ```
 
+Typecheck
+
+```
+npm run typecheck
+```
+
 Run unit tests
 
 ```

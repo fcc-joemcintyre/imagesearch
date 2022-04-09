@@ -16,13 +16,16 @@
     "node-fetch": "3.2.3"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf lib && swc src -d lib",
     "test": "mocha",
     "start": "nodemon lib/main.js --port=3000",
-    "lint": "eslint --ext .js,.ts,.tsx --no-error-on-unmatched-pattern ."
+    "lint": "eslint --ext .js,.ts,.tsx --no-error-on-unmatched-pattern .",
+    "typecheck": "tsc"
   },
   "devDependencies": {
     "@cygns/eslint-config-node": "6.0.0",
+    "@swc/cli": "0.1.57",
+    "@swc/core": "1.2.165",
     "@types/express": "4.17.13",
     "@types/mocha": "9.1.0",
     "@types/node": "17.0.23",
