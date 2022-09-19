@@ -22,11 +22,11 @@ where [hostname] is the host name of the server hosting the service.
 
 An instance of the service is available at
 
-> https://imagesearch-jm.herukoapp.com
+> https://imagesearch-jm.onrender.com
 
 For example, using the following service call,
 
-> https://imagesearch-jm.herokuapp.com/api/imagesearch?q=sunset
+> https://imagesearch-jm.onremder.com/api/imagesearch?q=sunset
 
 The result is a JSON message, status 200, with the format
 
@@ -44,7 +44,7 @@ The result is a JSON message, status 200, with the format
 
 For the latest searches, use the following service call,
 
-    > https://imagesearch-jm.herokuapp.com/api/imagesearch/latest
+    > https://imagesearch-jm.onrender.com/api/imagesearch/latest
 
 The result is a JSON message, status 200, with the format
 
@@ -66,10 +66,10 @@ The result is a JSON message, status 200, with the format
 
 The following scripts are defined in this package
 
-Build
+Run ESLint against lib and test directories
 
 ```
-npm run build
+npm run lint
 ```
 
 Typecheck
@@ -84,16 +84,23 @@ Run unit tests
 npm test
 ```
 
+
+Build
+
+```
+npm run build
+```
+
 Start local server instance
 
 ```
+npm run dev
+```
+
+Start production server instance
+
+```
 npm start
-```
-
-Run ESLint against lib and test directories
-
-```
-npm run lint
 ```
 
 ## License
